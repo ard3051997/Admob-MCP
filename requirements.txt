@@ -1,0 +1,7 @@
+fastmcp
+httpx
+google-auth
+google-auth-oauthlib
+pydantic>=2.0
+pyyaml
+python-dotenv

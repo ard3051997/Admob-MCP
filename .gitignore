@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Secrets & credentials — NEVER commit these
+.env
+credentials.json
+client_secret*.json
+token.json
+
+# Runtime-generated files
+admob_metrics.db
+audit.log
+
+# OS & editors
+.DS_Store
+.claude/
+.idea/
+.vscode/
+*.swp
+*.swo

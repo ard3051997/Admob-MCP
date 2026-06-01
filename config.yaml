@@ -1,0 +1,31 @@
+app_categories:
+  vpn:
+    app_ids: []
+    child_directed: false
+    primary_formats: ["INTERSTITIAL", "REWARDED_VIDEO", "BANNER", "APP_OPEN"]
+    notes: "High session length, strong rewarded engagement"
+
+  utility:
+    app_ids: []
+    child_directed: false
+    primary_formats: ["BANNER", "INTERSTITIAL", "NATIVE"]
+    notes: "Short sessions, banner-heavy. Native works well in results screens."
+
+  entertainment:
+    app_ids: []
+    child_directed: false
+    primary_formats: ["INTERSTITIAL", "REWARDED_VIDEO", "BANNER"]
+    notes: "High DAU, frequent ad impressions."
+
+  gaming:
+    app_ids: []
+    child_directed: false
+    primary_formats: ["REWARDED_VIDEO", "INTERSTITIAL", "BANNER"]
+    notes: "Rewarded is king. Interstitial at natural break points."
+
+rules:
+  # Placeholder for rule weights or overrides if needed
+  min_bidding_partners: 3
+  stale_ecpm_threshold_days: 30
+  ecpm_floor_sanity_multiplier: 2.0
+  stale_experiment_days: 14
