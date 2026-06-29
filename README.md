@@ -14,10 +14,12 @@ MCP-admob/
 │   ├── server.py           ← Server entry point, async context & lifespans
 │   ├── resources.py        ← Exposed resources (ad-sources, format-support)
 │   ├── prompts.py          ← Integrated workflow prompt templates
+│   ├── login.py            ← Browser automation authentication flow (Playwright)
 │   └── tools/              ← MCP Tool modules
 │       ├── reporting.py    ← Read-only reports & network data
-│       ├── management.py   ← Mediation Group CRUD
+│       ├── management.py   ← Mediation Group CRUD & Line-item updates
 │       ├── experiments.py  ← A/B experiment lifecycles
+│       ├── browser.py      ← Console operations & Policy Center scraper
 │       └── diagnostics.py  ← Expert metrics analysis & geo recommendations
 ├── admob_core/             ← Business Logic & Library Layer
 │   ├── client.py           ← Async Google AdMob REST API v1beta wrapper
@@ -26,9 +28,12 @@ MCP-admob/
 │   ├── analyzer.py         ← AdMonExpert core diagnostics & sync logic
 │   ├── rules.py            ← Mediation policy validator (Rules Engine)
 │   ├── safety.py           ← Write safeguard & audit logger
-│   └── registry.py         ← 13+ Ad Source capabilities knowledge base
+│   ├── registry.py         ← 13+ Ad Source capabilities knowledge base
+│   ├── browser_control.py  ← Headless Playwright browser session manager
+│   └── builder.py          ← Guided mediation group configuration builder
 ├── config.yaml             ← App categories & rule configuration thresholds
-├── requirements.txt        ← Python package dependencies
+├── requirements.txt        ← Core Python package dependencies
+├── requirements-browser.txt ← Browser automation dependencies (Playwright)
 ├── .env.example            ← Template for required environment variables
 ├── .env                    ← Your secrets (not committed — copy from .env.example)
 ├── credentials.json        ← OAuth 2.0 Client credentials (not committed — you provide)
@@ -77,6 +82,22 @@ SLACK_WEBHOOK_URL=                      # (Optional) Slack alert webhook
 python admob_core/auth.py
 ```
 A browser tab will open — authenticate with your Google AdMob account and grant permissions. This writes `token.json` which is cached and auto-refreshed on all subsequent runs.
+
+### 6. Browser Automation Setup (Optional)
+To use tools that rely on browser automation (such as scraping the Policy Center):
+1. Install Playwright browser dependencies:
+   ```bash
+   pip install -r requirements-browser.txt
+   ```
+2. Install the Chromium browser binary:
+   ```bash
+   playwright install chromium
+   ```
+3. Run the headful login flow to store a persistent session:
+   ```bash
+   python -m admob_mcp.login
+   ```
+   A visible browser window will open. Log in to your Google Account associated with AdMob. Once you reach the AdMob dashboard, close the browser window. The session will be saved locally under `.admob_session/` and used headlessly by the tools.
 
 ---
 
@@ -167,7 +188,7 @@ Restart Claude Desktop to reload.
 
 ## 🧩 MCP Primitives Reference
 
-### 🛠️ Tools (14 total)
+### 🛠️ Tools (21 total)
 
 #### Reporting — Read-Only
 | Tool | Description |
@@ -184,6 +205,11 @@ Restart Claude Desktop to reload.
 | `admob_list_ad_sources` | Lists available ad network sources supported by AdMob |
 | `admob_create_mediation_group` | Creates a mediation group (runs Rules Engine validation first) |
 | `admob_update_mediation_group` | Updates targeting, status, or line items of a mediation group |
+| `admob_create_ad_unit_mapping` | Link third-party network credentials to an ad unit (e.g. for InMobi, AppLovin) |
+| `admob_list_ad_unit_mappings` | Lists existing credential mappings for a specific ad unit |
+| `admob_set_floor` | Updates the eCPM floor price (in USD) for a waterfall mediation line item |
+| `admob_add_mediation_line` | Appends a bidding or waterfall line item to an existing mediation group |
+| `admob_build_mediation_group` | Guided helper to construct and create a new mediation group |
 
 #### Experiments — A/B Testing
 | Tool | Description |
@@ -198,6 +224,12 @@ Restart Claude Desktop to reload.
 | `admob_expert_analyze` | Root-cause analysis: fill rate anomalies, match rate drops, revenue alerts |
 | `admob_recommend_networks_geo` | Tier-1/Tier-2 network recommendations for a country + ad format |
 | `admob_request_placement_map` | Returns a placement mapping template for UX/monetization planning |
+
+#### Browser Automation
+| Tool | Description |
+|------|-------------|
+| `admob_policy_violations` | Scrapes the AdMob Policy Center for active account or app violations |
+| `admob_realtime_metrics` | Fetches today's live console metrics (dashboard scraping — stubbed) |
 
 ---
 
