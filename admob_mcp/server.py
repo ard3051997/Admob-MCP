@@ -40,6 +40,7 @@ import admob_mcp.tools.reporting
 import admob_mcp.tools.management
 import admob_mcp.tools.experiments
 import admob_mcp.tools.diagnostics
+import admob_mcp.tools.browser
 import admob_mcp.resources
 import admob_mcp.prompts
 

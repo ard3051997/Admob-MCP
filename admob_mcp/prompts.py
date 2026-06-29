@@ -21,3 +21,19 @@ def portfolio_health():
     3. Look for stale A/B experiments across all groups.
     4. Summarize revenue performance for the last 30 days.
     """
+
+@mcp.prompt()
+def setup_mediation(app_id: str, ad_format: str, target_geos: str):
+    """Guided prompt for creating a new mediation group with floors and bidding."""
+    return f"""
+    Please help me set up a new mediation group for app_id {app_id}.
+    Format: {ad_format}
+    Target Geos (comma separated): {target_geos}
+    
+    Follow these steps:
+    1. Check `admob_list_ad_units` to find the correct ad unit ID for {app_id} and {ad_format}.
+    2. Use `admob_recommend_networks_geo` for the target geos to see which networks are Tier 1.
+    3. If we don't have ad unit mappings for the chosen networks, ask the user for the network credentials and use `admob_create_ad_unit_mapping` to link them.
+    4. Build the group using `admob_build_mediation_group` with `dry_run=True`. Include bidding lines and waterfall lines with appropriate floors based on historical data.
+    5. Show me the dry run result and ask for my confirmation before running without dry_run.
+    """

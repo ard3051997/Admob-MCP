@@ -9,16 +9,6 @@ dist/
 build/
 .eggs/
 
-# Secrets & credentials — NEVER commit these
-.env
-credentials.json
-client_secret*.json
-token.json
-
-# Runtime-generated files
-admob_metrics.db
-audit.log
-
 # OS & editors
 .DS_Store
 .claude/
@@ -26,3 +16,16 @@ audit.log
 .vscode/
 *.swp
 *.swo
+
+# NOTE: This is the LOCAL branch.
+# credentials.json, token.json, .env, admob_metrics.db, and audit.log
+# are intentionally tracked here for personal use.
+# NEVER merge this branch into main or make this repo public.
+
+# Credentials and Database Files (ignored for open source safety)
+credentials.json
+token.json
+.env
+admob_metrics.db
+audit.log
+client_secret_*.json

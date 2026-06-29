@@ -209,6 +209,30 @@ class AdMobClient:
         self.cache.invalidate(f"ad_units:.*")
         return data
 
+    async def list_ad_unit_mappings(self, ad_unit_id: str) -> List[Dict[str, Any]]:
+        cache_key = f"ad_unit_mappings:{ad_unit_id}"
+        cached = self.cache.get(cache_key)
+        if cached:
+            return cached
+
+        mappings = []
+        next_page_token = None
+        
+        while True:
+            params = {"pageSize": 1000}
+            if next_page_token:
+                params["pageToken"] = next_page_token
+            
+            data = await self._request("GET", f"accounts/{self.publisher_id}/adUnits/{ad_unit_id}/adUnitMappings", params=params)
+            mappings.extend(data.get("adUnitMappings", []))
+            
+            next_page_token = data.get("nextPageToken")
+            if not next_page_token:
+                break
+        
+        self.cache.set(cache_key, mappings)
+        return mappings
+
     async def create_ad_unit(self, ad_unit: Dict[str, Any]) -> Dict[str, Any]:
         data = await self._request("POST", f"accounts/{self.publisher_id}/adUnits", json=ad_unit)
         self.cache.invalidate("ad_units:.*")
