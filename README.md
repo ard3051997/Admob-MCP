@@ -1,12 +1,22 @@
-# 🚀 AdMob Model Context Protocol (MCP) Server
+# AdMob Model Context Protocol (MCP) Server
 
 A powerful **Model Context Protocol (MCP)** server that exposes Google AdMob management, mediation waterfall operations, advanced revenue analysis, and A/B experiments directly to MCP-compatible AI clients (such as **Claude Code CLI**, **Claude Desktop**, **Cursor**, **Windsurf**, and **Cline**).
 
 Features a local **Rules Engine** and **Safety Layer** ensuring that mutating operations are audited, verified, and run via dry-runs before touching your live AdMob account.
 
+## Technical Features
+
+* **AdMob REST API Integration**: Real-time management of apps, ad units, and waterfall mediation components utilizing the Google AdMob REST API v1beta.
+* **Mediation Waterfall Control**: Programmatic creation, update, and deletion of mediation groups, with specific support for updating floor CPMs and establishing third-party network credential mappings (e.g., InMobi, AppLovin).
+* **Automated Rules Engine**: Local static analysis validation for mediation payloads, enforcing constraints such as child-directed (COPPA) network restrictions, correct ad format compatibility, and minimum partner counts.
+* **Mutating Safeguards**: Two-phase mutating safety system providing dry-run simulation support, pre-change snapshotting, and structured JSON audit logging to local files.
+* **Mediation A/B Experimentation**: End-to-end programmatic lifecycle management of mediation A/B tests, enabling automated setup, verification, and promotion of winning configurations.
+* **Metrics Synchronization & Diagnostics**: Automated retrieval of historical reports stored in a local SQLite database for offline diagnostics, anomaly detection (e.g., show rate dropouts), and geo-recommendations.
+* **Console Automation Engine**: Embedded Playwright automation suite for managing console areas not exposed via the REST API (such as Policy Center violations), using persistent Chrome profile directories to securely bypass anti-bot mechanisms.
+
 ---
 
-## 📂 Architecture Overview
+## Architecture Overview
 
 ```
 MCP-admob/
@@ -42,7 +52,7 @@ MCP-admob/
 
 ---
 
-## 🛠️ Prerequisites & Setup
+## Prerequisites & Setup
 
 ### 1. Enable the Google AdMob API
 1. Open the [Google Cloud Console](https://console.cloud.google.com/).
@@ -101,11 +111,11 @@ To use tools that rely on browser automation (such as scraping the Policy Center
 
 ---
 
-## 💻 Integrating with AI Clients
+## Integrating with AI Clients
 
 > **Replace `/path/to/MCP-admob` with the absolute path to wherever you cloned this repo.**
 
-### 🤖 Claude Code (CLI)
+### Claude Code (CLI)
 
 ```bash
 claude mcp add admob-mediation \
@@ -136,7 +146,7 @@ Verify with `claude mcp list`.
 
 ---
 
-### 🖥️ Claude Desktop App
+### Claude Desktop App
 Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 
 ```json
@@ -161,7 +171,7 @@ Restart Claude Desktop to reload.
 
 ---
 
-### 🔍 Cursor IDE
+### Cursor IDE
 1. **Settings** → **Features** → **MCP** → **+ Add New MCP Server**
 2. **Name**: `admob-mediation` | **Type**: `command`
 3. **Command**: `/path/to/MCP-admob/.venv/bin/python -m admob_mcp`
@@ -169,7 +179,7 @@ Restart Claude Desktop to reload.
 
 ---
 
-### 🌊 Windsurf / Cline / Roo Code
+### Windsurf / Cline / Roo Code
 ```json
 "admob-mediation": {
   "command": "/path/to/MCP-admob/.venv/bin/python",
@@ -186,9 +196,9 @@ Restart Claude Desktop to reload.
 
 ---
 
-## 🧩 MCP Primitives Reference
+## MCP Primitives Reference
 
-### 🛠️ Tools (21 total)
+### Tools (21 total)
 
 #### Reporting — Read-Only
 | Tool | Description |
@@ -233,7 +243,7 @@ Restart Claude Desktop to reload.
 
 ---
 
-### 📦 Resources (3)
+### Resources (3)
 | URI | Description |
 |-----|-------------|
 | `admob://ad-sources` | Full ad network registry with bidding/waterfall support and source IDs |
@@ -242,7 +252,7 @@ Restart Claude Desktop to reload.
 
 ---
 
-### 💡 Prompts (2)
+### Prompts (2)
 | Prompt | Description |
 |--------|-------------|
 | `optimize_app(app_id)` | Step-by-step audit: sync data → analyze → inspect groups → recommend changes |
@@ -250,7 +260,7 @@ Restart Claude Desktop to reload.
 
 ---
 
-## 🔒 Safety, Auditing & Rules Engine
+## Safety, Auditing & Rules Engine
 
 All write operations go through a two-stage safety pipeline before touching the live API:
 
@@ -269,7 +279,7 @@ All write operations go through a two-stage safety pipeline before touching the 
 
 ---
 
-## ⚙️ Configuration (`config.yaml`)
+## Configuration (`config.yaml`)
 
 Customize app categories and rule thresholds:
 
@@ -288,7 +298,7 @@ rules:
 
 ---
 
-## ❌ Troubleshooting
+## Troubleshooting
 
 | Error | Fix |
 |-------|-----|
@@ -300,7 +310,7 @@ rules:
 
 ---
 
-## 📋 Requirements
+## Requirements
 
 - Python 3.10+
 - Google Cloud project with AdMob API enabled
@@ -309,6 +319,6 @@ rules:
 
 ---
 
-## 📄 License
+## License
 
 MIT — see [LICENSE](LICENSE).
